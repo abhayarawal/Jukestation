@@ -1,0 +1,135 @@
+/*
+ *
+ *= require_self
+ */
+
+@import "bootstrap.min";
+@import "bourbon";
+
+body
+{
+	font-family: 'Abel', sans-serif;
+  position: relative;
+}
+
+.search-wrap
+{
+  position: fixed;
+  z-index: 100;
+  width: 100%;
+  height: 100%;
+  left: 0px;
+  top: 0px;
+  background: rgba(42, 42, 42, 0.85);
+  padding: 40px 50px;
+  color: rgb(223, 217, 217);
+  // opacity: 0;
+  // visibility: hidden;
+
+  .search-box
+  {
+    position: relative;
+    display: block;
+
+    input[type=text]
+    {
+      width: 100%;
+      height: 60px; 
+      font-size: 30px;
+      border: none;
+      background: none;
+      border-bottom: 4px solid rgba(226, 226, 226, 1);
+      outline: none;
+      color: rgba(226, 226, 226, 1);
+    }
+  }
+}
+
+jk-video 
+{
+  width: 240px;
+  height: 240px;
+  background: #ffc917;
+  position: relative;
+  @include transition (all 0.2s ease, top 0.5s ease-in-out, left 0.5s ease-in-out);
+  color: #3f3a44;
+  font-size: 16px;
+  text-align: center;
+  @include transform-style(preserve-3d);
+  @include transform-origin(center center);
+  @include transform(rotate(-45deg));
+  // top: 0;
+  // left: 50%;
+  // margin-left: -120px;
+
+  &:hover
+  {
+  	@include transform(rotate(-45deg) scale(1.1));
+  	box-shadow: 0 0 0px 8px rgba(188, 145, 5, 0.66);
+  	z-index: 10;
+  	// @include transform(rotate(0deg) scale(1.1) translateX(-96px));
+  	// width: 450px;
+  	// text-align: left;
+
+  	// .card
+  	// {
+  	// 	@include transform(rotate(0deg));
+  	// }
+  }
+
+  .card
+  {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    @include transition (all 0.2s ease);
+    @include transform-style(preserve-3d);
+	  @include transform-origin(0 0);
+	  @include transform(rotate(45deg));
+  }
+}
+
+.videos-grid
+{
+  position: relative;
+  width: 100%;
+  
+  jk-video
+  {
+  	position: absolute;
+  }
+}
+
+.spinner 
+{
+  width: 80px;
+  height: 80px;
+  margin: 0px auto;
+  background-color: #333;
+
+  border-radius: 100%;  
+  -webkit-animation: scaleout 1.0s infinite ease-in-out;
+  animation: scaleout 1.0s infinite ease-in-out;
+}
+
+@-webkit-keyframes scaleout 
+{
+  0% { -webkit-transform: scale(0.0) }
+  100% {
+    -webkit-transform: scale(1.0);
+    opacity: 0;
+  }
+}
+
+@keyframes scaleout 
+{
+  0% { 
+    transform: scale(0.0);
+    -webkit-transform: scale(0.0);
+  } 100% {
+    transform: scale(1.0);
+    -webkit-transform: scale(1.0);
+    opacity: 0;
+  }
+}

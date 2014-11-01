@@ -1,0 +1,16 @@
+!!!
+%html
+	%head
+		%title Jukestation
+
+		%meta{content: "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no", name: "viewport"}/
+
+		%link{:rel => "stylesheet", :href => "//fonts.googleapis.com/css?family=Abel"}/
+
+		= stylesheet_link_tag "application", media: "all"
+		= csrf_meta_tags
+		
+		%script{:src => '//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js', :'data-main' => '/assets/main.js'}
+	%body
+
+		= yield

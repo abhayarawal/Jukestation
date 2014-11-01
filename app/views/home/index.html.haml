@@ -1,0 +1,11 @@
+.search-wrap{:'ng-controller' => 'ytsController'}
+	.search-box
+		%input{:type => "text", :placeholder => "Which video are you looking for?", :'ng-model' => "query"}/
+	.search-results
+		%ul.no-ul.m0.p0
+			%li{:'ng-repeat' => "video in ytvideos"}
+				{{ video.title.$t }}
+
+.videos-grid
+	-(1..18).each do
+		%jk-video
