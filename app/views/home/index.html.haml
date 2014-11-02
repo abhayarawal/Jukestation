@@ -16,5 +16,7 @@
 				{{ video.title }}
 				%a{:'ng-click' => "remove($index)"} Remove
 
+.player
+
 .videos-grid
 	%jk-video{:'ng-repeat' => "video in playlist track by $index", :video => "video", :'repeat-edge' => true}

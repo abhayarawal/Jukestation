@@ -4,6 +4,7 @@ require.config
 		angular: '//ajax.googleapis.com/ajax/libs/angularjs/1.3.1/angular.min'
 		angularResource: '//code.angularjs.org/1.3.1/angular-resource.min'
 		jukestation: '/assets/jukestation.js'
+		jkFilters: '/assets/jk-filters.js'
 		jkFactories: '/assets/jk-factories.js'
 		jkDr: '/assets/jk-components.js'
 		jkControllers: '/assets/jk-controllers.js'

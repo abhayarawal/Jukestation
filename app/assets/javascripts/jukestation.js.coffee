@@ -1,7 +1,8 @@
-define 'jukestation', ['angular', 'jkDr', 'jkControllers'], (ng, jkDr, jkControllers) ->
+define 'jukestation', ['angular', 'jkDr', 'jkControllers', 'jkFilters'], (ng, jkDr, jkControllers, jkFilters) ->
 	Jukestation = ng.module 'Jukestation', [
 		'Jukestation.jkDr',
-		'Jukestation.jkControllers'
+		'Jukestation.jkControllers',
+		'Jukestation.jkFilters'
 	]
 
 	# Initialize application

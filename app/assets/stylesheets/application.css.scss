@@ -8,11 +8,58 @@
 
 body
 {
-	font-family: 'Abel', sans-serif;
+	font-family: 'Yanone Kaffeesatz', sans-serif;
   position: relative;
   background: url('http://i.ytimg.com/vi/xkgNsE9Uhzc/maxresdefault.jpg');
   background-attachment: fixed; 
   background-position: 0 0;
+}
+
+.button
+{
+  width: 60px;
+  height: 60px;
+  line-height: 60px;
+  display: inline-block;
+  background: none;
+  border: none;
+  text-align: center;
+  font-size: 24px;
+  color: rgba(255, 255, 255, 0.54);
+  position: relative;
+  overflow: hidden;
+  outline: none;
+
+  &:after
+  {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    position: absolute;
+    background: #434C55;
+    opacity: 0;
+    @include border-top-radius(50%);
+    @include border-bottom-radius(50%);
+    @include border-left-radius(50%);
+    @include border-right-radius(50%);
+  }
+
+  &:hover
+  {
+    &:after
+    {
+      opacity: 0.5;
+      @include animation(bounce 0.5s forwards ease-in-out);
+    }
+  }
+}
+
+@-webkit-keyframes bounce {
+  0%, 100% { -webkit-transform: scale(0.0) }
+  100% { -webkit-transform: scale(1.0) }
 }
 
 .search-wrap
@@ -47,16 +94,37 @@ body
   }
 }
 
+.player
+{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  &:after
+  {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgb(31, 41, 51);
+    opacity: 0.65;
+  }
+}
+
 jk-video 
 {
   width: 450px;
   height: 150px;
-  background: white;
+  background: none;
   position: relative;
   @include transition (all 0.2s ease, top 0.5s ease-in-out, left 0.5s ease-in-out);
   color: #3f3a44;
   font-size: 16px;
-  text-align: center;
   @include transform-style(preserve-3d);
   @include transform-origin(center center);
 
@@ -74,18 +142,134 @@ jk-video
     @include transition (all 0.2s ease);
     @include transform-style(preserve-3d);
 	  @include transform-origin(0 0);
+    font-size: 0;
+
+    & > div
+    {
+      display: inline-block;
+      vertical-align: top;
+    }
+
+    .thumbnail
+    {
+      width: 40%;
+      height: 150px;
+      position: relative;
+      overflow: hidden;
+
+      img
+      {
+        position: absolute;
+        width: 275px;
+        left: 50%;
+        margin-left: -137.5px;
+        top: -28px;
+      }
+    }
+
+    .meta
+    {
+      width: 55%;
+      margin-left: 5%;
+      font-size: 15px;
+      background: rgba(255, 255, 255, 0.9);
+      height: 150px;
+      padding: 15px;
+
+      .duration
+      {
+        display: block;
+        margin-bottom: 15px;
+      }
+
+      h3
+      {
+        margin: 0;
+        padding: 0;
+        text-transform: uppercase;
+      }
+    }
+  }
+
+  .card-ctl
+  {
+    // background: url(asset-path('stitched-artwork.png'));
+    background-position: 0 0;
+    color: #3f3a44;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    padding: 45px 0;
+  }
+
+  &:hover
+  {
+    .card-ctl
+    {
+      // -webkit-animation: bgfall 20s infinite ease-in-out;
+    }
   }
 }
+
+@-webkit-keyframes bgfall 
+{
+  0% { background-position: 0% 0%; }
+  50% {
+    background-position: 0% -100%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}
+
 
 .videos-grid
 {
   position: relative;
   width: 100%;
+  margin-top: 60px;
   
   jk-video
   {
   	position: absolute;
   }
+}
+
+.flip-container {
+  @include perspective(1000);
+}
+  .flip-container:hover .flipper, .flip-container.hover .flipper {
+    @include transform(rotateY(180deg));
+  }
+
+.flip-container, .front, .back {
+  width: 450px;
+  height: 150px;
+}
+
+.flipper {
+  @include transition (0.6s);
+  @include transform-style(preserve-3d);
+  position: relative;
+}
+
+.front, .back {
+  @include backface-visibility(hidden);
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.front {
+  z-index: 2;
+  @include transform(rotateY(0deg));
+}
+
+.back {
+  @include transform(rotateY(180deg));
 }
 
 .spinner 
