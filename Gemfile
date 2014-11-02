@@ -5,7 +5,8 @@ gem 'rails', '4.0.0'
 
 gem 'haml'
 gem 'bourbon'
-gem 'google-api-client', '~> 0.7.1'
+# gem 'google-api-client', '~> 0.7.1'
+gem 'mongoid'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.0'

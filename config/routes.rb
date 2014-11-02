@@ -1,11 +1,13 @@
 Jukestation::Application.routes.draw do
+  get "/pl/:pid", to: 'home#index', as: 'pl'
   get "home/index"
   root "home#index"
 
   # constraints subdomain: 'api' do
-  #   namespace :api do
-  #     resources :videos
-  #   end
+    namespace :api, path: '/' do
+      resources :videos, :defaults => {format: :json}
+      post '/sync', to: 'videos#sync', :defaults => {format: :json}
+    end
   # end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
