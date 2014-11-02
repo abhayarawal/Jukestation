@@ -17,5 +17,8 @@
 
 .player
 
-.videos-grid
-	%jk-video{:'ng-repeat' => "video in playlist track by $index", :video => "video", :remove => 'remove($index)', :'repeat-edge' => true}
+.wrap
+	.tx-r
+		%button{:'ng-click' => "sync()"} Save
+	.videos-grid
+		%jk-video{:'ng-repeat' => "video in playlist track by $index", :video => "video", :remove => 'remove($index)', :'repeat-edge' => true}
