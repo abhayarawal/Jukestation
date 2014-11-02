@@ -4,11 +4,7 @@ module Api
 
 		def index
 			playlist = current_playlist
-			unless playlist.new_record?
-				respond_with [true, playlist.videos]
-			else
-				respond_with [false, playlist.videos]
-			end
+			respond_with [!playlist.new_record?, playlist.videos]
 		end
 
 		def create

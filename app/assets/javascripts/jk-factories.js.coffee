@@ -9,7 +9,7 @@ define 'jkFactories', ['angular', 'angularResource'], (ng, ngResource) ->
 	]
 
 	jkFactories.factory 'Video', ['$resource', ($resource) ->
-		$resource '//jk-dev.com:3000/videos/:id', null,
+		$resource '/videos/:id', null,
 			query:
 				method: 'GET'
 				isArray: true
@@ -45,6 +45,7 @@ define 'jkFactories', ['angular', 'angularResource'], (ng, ngResource) ->
 			init: ->
 				_ref = @
 				Video.query().$promise.then (list) ->
+					console.log list
 					_ref.pid = list[0] 
 					angular.forEach list[1], (video) ->
 						_ref.playlist.push video
