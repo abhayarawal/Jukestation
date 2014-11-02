@@ -17,5 +17,4 @@
 				%a{:'ng-click' => "remove($index)"} Remove
 
 .videos-grid
-	-(1..18).each do
-		%jk-video
+	%jk-video{:'ng-repeat' => "video in playlist track by $index", :video => "video", :'repeat-edge' => true}

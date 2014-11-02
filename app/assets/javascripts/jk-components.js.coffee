@@ -7,7 +7,7 @@ define 'jkDr', ['angular'], (ng) ->
 			video: "="
 		template: """
 			<div class="card">
-				All time low - Time bomb
+				{{ video.title }}
 			</div>
 		"""
 

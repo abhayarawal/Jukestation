@@ -13,7 +13,10 @@ require.config
     angular:
       deps: ['jquery']
       exports: 'angular'
+    angularResource:
+      deps: ['angular']
+      exports: 'angularResource'
 
 
-require ['jukestation', 'grid'], (jukestation, grid) ->
+require ['jukestation'], (jukestation) ->
 	jukestation.init()

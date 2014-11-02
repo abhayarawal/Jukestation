@@ -10,6 +10,9 @@ body
 {
 	font-family: 'Abel', sans-serif;
   position: relative;
+  background: url('http://i.ytimg.com/vi/xkgNsE9Uhzc/maxresdefault.jpg');
+  background-attachment: fixed; 
+  background-position: 0 0;
 }
 
 .search-wrap
@@ -23,8 +26,7 @@ body
   background: rgba(42, 42, 42, 0.85);
   padding: 40px 50px;
   color: rgb(223, 217, 217);
-  // opacity: 0;
-  // visibility: hidden;
+  display: none;
 
   .search-box
   {
@@ -47,9 +49,9 @@ body
 
 jk-video 
 {
-  width: 240px;
-  height: 240px;
-  background: #ffc917;
+  width: 450px;
+  height: 150px;
+  background: white;
   position: relative;
   @include transition (all 0.2s ease, top 0.5s ease-in-out, left 0.5s ease-in-out);
   color: #3f3a44;
@@ -57,24 +59,10 @@ jk-video
   text-align: center;
   @include transform-style(preserve-3d);
   @include transform-origin(center center);
-  @include transform(rotate(-45deg));
-  // top: 0;
-  // left: 50%;
-  // margin-left: -120px;
 
   &:hover
   {
-  	@include transform(rotate(-45deg) scale(1.1));
-  	box-shadow: 0 0 0px 8px rgba(188, 145, 5, 0.66);
   	z-index: 10;
-  	// @include transform(rotate(0deg) scale(1.1) translateX(-96px));
-  	// width: 450px;
-  	// text-align: left;
-
-  	// .card
-  	// {
-  	// 	@include transform(rotate(0deg));
-  	// }
   }
 
   .card
@@ -86,7 +74,6 @@ jk-video
     @include transition (all 0.2s ease);
     @include transform-style(preserve-3d);
 	  @include transform-origin(0 0);
-	  @include transform(rotate(45deg));
   }
 }
 
