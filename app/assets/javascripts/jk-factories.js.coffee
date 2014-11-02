@@ -17,29 +17,6 @@ define 'jkFactories', ['angular', 'angularResource'], (ng, ngResource) ->
 				method: 'PATCH'
 	]
 
-	jkFactories.factory 'jkSearch', ['$http', '$q', ($http, $q) ->
-		fetch_yt_videos: (query) ->
-			api = "//gdata.youtube.com/feeds/api/videos?category=Music"
-			options = 
-				q: query
-				'max-results': 12
-				alt: 'json'
-			ret = $q.defer()
-			$http.get(api, params: options, headers: {'X-CSRF-Token': undefined}
-			).success (videos) ->
-				_ref = []
-				angular.forEach videos.feed.entry, (entry) ->
-          _ref.push
-            vid: entry.id.$t.match(/([a-z0-9-_]+)$/i)[1]
-            title: entry.title.$t
-            thumbnail: entry.media$group.media$thumbnail[0].url
-            duration: entry.media$group.yt$duration.seconds
-        ret.resolve _ref
-
-			# Return the videos
-			ret
-	]
-
 	jkFactories.factory 'jukePlayer', ['Video', '$http', '$q', (Video, $http, $q) ->
 		{
 			init: ->
@@ -50,6 +27,11 @@ define 'jkFactories', ['angular', 'angularResource'], (ng, ngResource) ->
 						_ref.playlist.push video
 			pid: false,
 			playlist: [],
+			exist: (video) ->
+				duplicate = false
+				angular.forEach @.playlist, (entry) ->
+					duplicate = true if video.vid is entry.vid
+				duplicate
 			enqueue: (entry) ->
 				duplicate = false
 				angular.forEach @.playlist, (video) ->
@@ -71,6 +53,30 @@ define 'jkFactories', ['angular', 'angularResource'], (ng, ngResource) ->
 					if uri.length is 1
 						window.location = "/pl/#{uri[0]}"
 		}
+	]
+
+	jkFactories.factory 'jkSearch', ['$http', '$q', 'jukePlayer', ($http, $q, jukePlayer) ->
+		fetch_yt_videos: (query) ->
+			api = "//gdata.youtube.com/feeds/api/videos?category=Music"
+			options = 
+				q: query
+				'max-results': 12
+				alt: 'json'
+			ret = $q.defer()
+			$http.get(api, params: options, headers: {'X-CSRF-Token': undefined}
+			).success (videos) ->
+				_ref = []
+				angular.forEach videos.feed.entry, (entry, i) ->
+          _ref.push
+            vid: entry.id.$t.match(/([a-z0-9-_]+)$/i)[1]
+            title: entry.title.$t
+            thumbnail: entry.media$group.media$thumbnail[0].url
+            duration: entry.media$group.yt$duration.seconds
+          _ref[i]['inqueue'] = jukePlayer.exist _ref[i]
+        ret.resolve _ref
+
+			# Return the videos
+			ret
 	]
 
 	jkFactories

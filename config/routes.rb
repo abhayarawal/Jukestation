@@ -1,5 +1,5 @@
 Jukestation::Application.routes.draw do
-  get "/pl/:pid", to: 'home#index', as: 'pl'
+  get "/pl/:playlist", to: 'home#index'
   get "home/index"
   root "home#index"
 

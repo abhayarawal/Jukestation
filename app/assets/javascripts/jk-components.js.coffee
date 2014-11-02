@@ -12,7 +12,7 @@ define 'jkDr', ['angular'], (ng) ->
 				<div class="front">
 					<div class="card">
 						<div class="thumbnail">
-							<img src="{{ video.thumbnail }}" alt="">
+							<img ng-src="{{ video.thumbnail }}" alt="">
 						</div>
 						<div class="meta">
 							<span class="duration">{{ video.duration | duration }}</span>
@@ -30,6 +30,7 @@ define 'jkDr', ['angular'], (ng) ->
 			</div>
 		</div>
 		"""
+
 	jkDr.directive 'ytVideo', ->
 		restrict: 'E'
 		scope: 
@@ -37,13 +38,15 @@ define 'jkDr', ['angular'], (ng) ->
 			add: "&"
 		link: (scope, element, attrs) ->
 			scope.queue = ->
-				console.log "qq"
+				scope.add()
+				scope.video.inqueue = true
 		template: """
 			<div class="thumbnail">
-				<img src="{{ video.thumbnail }}" alt="">
+				<img ng-src="{{ video.thumbnail }}" alt="">
+				<button class="button icon-plus type2" ng-hide="video.inqueue" ng-click="queue()"></button>
+				<span class="button icon-check type3" ng-show="video.inqueue"></span>
 			</div>
 			<h3>{{ video.title }}</h3>
-			<a ng-click="add()">Add</a>
 		"""
 
 	jkDr

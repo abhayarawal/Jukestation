@@ -19,6 +19,7 @@ module Api
 			videos = params[:videos]
 			playlist = current_playlist
 			videos.each do |video|
+				video.delete "inqueue"
 				tmp = Video.new video
 				playlist.videos << Video.new(video) if tmp.valid?
 			end

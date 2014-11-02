@@ -73,7 +73,18 @@ body
   color: rgba(255, 255, 255, 0.54);
   position: relative;
   overflow: hidden;
+  vertical-align: top;
   outline: none;
+
+  &.type2
+  {
+    color: rgba(249, 79, 102, 1);
+  }
+
+  &.type3
+  {
+    color: rgba(99, 212, 15, 1);
+  }
 
   &:after
   {
@@ -104,12 +115,16 @@ body
 
 .search-results
 {
-  margin-top: 50px;
-
   li
   {
     width: 15%;
     margin-right: 2%;
+    margin-top: 50px;
+
+    &.inqueue
+    {
+      opacity: 0.2;
+    }
   
     &:nth-child(6n+6)
     {
