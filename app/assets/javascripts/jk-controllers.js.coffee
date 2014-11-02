@@ -1,17 +1,13 @@
 define 'jkControllers', ['angular', 'jkFactories'], (ng, jkFactories) ->
 	jkControllers = ng.module 'Jukestation.jkControllers', ['Jukestation.jkFactories']
 
-	jkControllers.controller 'jukeController', ['$scope', 'Video', 'jukePlayer', ($scope, Video, jukePlayer) ->
-		# videos = Video.get vid: "hkasl"
-		# videos.$promise.then (d) ->
-		# 	console.log d.uri
-
+	jkControllers.controller 'jukeController', ['$scope', 'jukePlayer', ($scope, jukePlayer) ->
 		jukePlayer.init()
 		$scope.playlist = jukePlayer.playlist
 
 		$scope.remove = (entry) ->
 			jukePlayer.remove(entry)
-			
+
 		$scope.sync = ->
 			jukePlayer.sync()
 	]

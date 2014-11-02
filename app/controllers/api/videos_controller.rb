@@ -5,9 +5,9 @@ module Api
 		def index
 			playlist = current_playlist
 			unless playlist.new_record?
-				respond_with [playlist.uri, playlist.videos]
+				respond_with [true, playlist.videos]
 			else
-				respond_with playlist.videos
+				respond_with [false, playlist.videos]
 			end
 		end
 

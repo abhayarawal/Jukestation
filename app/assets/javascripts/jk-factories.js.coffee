@@ -44,10 +44,9 @@ define 'jkFactories', ['angular', 'angularResource'], (ng, ngResource) ->
 		{
 			init: ->
 				_ref = @
-				Video.query().$promise.then (videos) ->
-					tmp = []
-					if videos.length is 2 then tmp = videos[1]; _ref.pid = true else	tmp = videos
-					angular.forEach tmp, (video) ->
+				Video.query().$promise.then (list) ->
+					_ref.pid = list[0] 
+					angular.forEach list[1], (video) ->
 						_ref.playlist.push video
 			pid: false,
 			playlist: [],
