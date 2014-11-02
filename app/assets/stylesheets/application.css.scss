@@ -6,6 +6,46 @@
 @import "bootstrap.min";
 @import "bourbon";
 
+.m0 { margin: 0 !important; }
+.m10 { margin-bottom: 10px !important; }
+.m20 { margin-bottom: 20px !important; }
+.m30 { margin-bottom: 30px !important; }
+.m40 { margin-bottom: 40px !important; }
+.m50 { margin-bottom: 50px !important; }
+.m60 { margin-bottom: 60px !important; }
+.m70 { margin-bottom: 70px !important; }
+.m80 { margin-bottom: 80px !important; }
+.m90 { margin-bottom: 90px !important; }
+.m100 { margin-bottom: 100px !important; }
+
+.p0 { padding: 0 !important; }
+.p10 { padding-top: 10px !important; }
+.p20 { padding-top: 20px !important; }
+.p30 { padding-top: 30px !important; }
+.p40 { padding-top: 40px !important; }
+.p50 { padding-top: 50px !important; }
+.p60 { padding-top: 60px !important; }
+.p70 { padding-top: 70px !important; }
+.p80 { padding-top: 80px !important; }
+.p90 { padding-top: 90px !important; }
+.p100 { padding-top: 100px !important; }
+
+.no-ul { list-style-type: none; }
+.ib { display: inline-block; }
+.va-t { vertical-align: top; }
+.ul-ib { font-size: 0; li { display: inline-block; vertical-align: top; font-size: 13px; } }
+.tx-r { text-align: right; }
+.tx-c { text-align: center; }
+.tx-l { text-align: left; }
+.block { display: block; }
+.hidden { display: none !important; }
+.responsive { width: 100%; display: block; height: auto; }
+.upcase { text-transform: uppercase; }
+.cap { text-transform: capitalize; }
+.lcase { text-transform: lowercase; }
+.rel { position: relative; }
+.fw-300 { font-weight: 300; }
+
 body
 {
 	font-family: 'Yanone Kaffeesatz', sans-serif;
@@ -13,6 +53,11 @@ body
   background: url('http://i.ytimg.com/vi/xkgNsE9Uhzc/maxresdefault.jpg');
   background-attachment: fixed; 
   background-position: 0 0;
+
+  &.no
+  {
+    overflow: hidden;
+  }
 }
 
 .button
@@ -39,7 +84,7 @@ body
     top: 0px;
     left: 0px;
     position: absolute;
-    background: #434C55;
+    background: #9FA2A5;
     opacity: 0;
     @include border-top-radius(50%);
     @include border-bottom-radius(50%);
@@ -52,7 +97,43 @@ body
     &:after
     {
       opacity: 0.5;
-      @include animation(bounce 0.5s forwards ease-in-out);
+      @include animation(bounce 0.35s forwards ease-in-out);
+    }
+  }
+}
+
+.search-results
+{
+  margin-top: 50px;
+
+  li
+  {
+    width: 15%;
+    margin-right: 2%;
+  
+    &:nth-child(6n+6)
+    {
+      margin-right: 0%;
+    }
+
+    yt-video
+    {
+      div
+      {
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+        height: 150px;
+
+        img
+        {
+          position: absolute;
+          width: 275px;
+          left: 50%;
+          margin-left: -137.5px;
+          top: -28px;
+        }
+      }
     }
   }
 }
@@ -70,10 +151,11 @@ body
   height: 100%;
   left: 0px;
   top: 0px;
-  background: rgba(42, 42, 42, 0.85);
   padding: 40px 50px;
-  color: rgb(223, 217, 217);
   display: none;
+  overflow-y: scroll;
+  color: #585858;
+  background: rgba(255, 255, 255, 0.95);
 
   .search-box
   {
@@ -87,9 +169,10 @@ body
       font-size: 30px;
       border: none;
       background: none;
-      border-bottom: 4px solid rgba(226, 226, 226, 1);
+      border: 2px solid #959595;
       outline: none;
-      color: rgba(226, 226, 226, 1);
+      color: 585858;
+      padding: 0 25px;
     }
   }
 }
@@ -193,7 +276,6 @@ jk-video
 
   .card-ctl
   {
-    // background: url(asset-path('stitched-artwork.png'));
     background-position: 0 0;
     color: #3f3a44;
     position: absolute;
@@ -203,25 +285,6 @@ jk-video
     height: 100%;
     text-align: center;
     padding: 45px 0;
-  }
-
-  &:hover
-  {
-    .card-ctl
-    {
-      // -webkit-animation: bgfall 20s infinite ease-in-out;
-    }
-  }
-}
-
-@-webkit-keyframes bgfall 
-{
-  0% { background-position: 0% 0%; }
-  50% {
-    background-position: 0% -100%;
-  }
-  100% {
-    background-position: 0% 0%;
   }
 }
 

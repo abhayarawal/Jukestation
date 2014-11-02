@@ -1,12 +1,11 @@
 .search-wrap
 	%section{:'ng-controller' => 'ytsController'}
 		.search-box
-			%input{:type => "text", :placeholder => "Which video are you looking for?", :'ng-model' => "query"}/
+			%input{:type => "text", :placeholder => "Which video are you looking for?", :'ng-model' => "query", :id => "q", :autocomplete => "off"}/
 		.search-results
-			%ul.no-ul.m0.p0
-				%li{:'ng-repeat' => "video in ytvideos"}
-					{{ video.title }}
-					%a{:'ng-click' => "enqueue(video)"} Queue video
+			%ul.no-ul.m0.p0.ul-ib
+				%li{:'ng-repeat' => "v in ytvideos"}
+					%yt-video{:video => 'v', :add => "enqueue(v)"}
 
 	%section
 		%strong Queue
@@ -19,4 +18,4 @@
 .player
 
 .videos-grid
-	%jk-video{:'ng-repeat' => "video in playlist track by $index", :video => "video", :'repeat-edge' => true}
+	%jk-video{:'ng-repeat' => "video in playlist track by $index", :video => "video", :remove => 'remove($index)', :'repeat-edge' => true}

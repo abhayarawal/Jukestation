@@ -4,12 +4,23 @@ define 'jkControllers', ['angular', 'jkFactories', 'grid'], (ng, jkFactories, gr
 	jkControllers.controller 'jukeController', ['$scope', 'jukePlayer', ($scope, jukePlayer) ->
 		jukePlayer.init()
 		$scope.playlist = jukePlayer.playlist
+		searchElm = $('.search-wrap')
 
 		$scope.remove = (entry) ->
 			jukePlayer.remove(entry)
 
 		$scope.sync = ->
 			jukePlayer.sync()
+
+		$(document).keyup (event) ->
+			if event.keyCode is 27
+				searchElm.hide()
+				$('body').removeClass 'no'
+		$(document).keypress (event) ->
+				unless $('#q').is ':focus'
+					searchElm.show()
+					$('body').addClass 'no'
+					$('#q').focus()
 	]
 
 	jkControllers.directive 'repeatEdge', ->
