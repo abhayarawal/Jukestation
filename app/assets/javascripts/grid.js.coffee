@@ -3,7 +3,7 @@ define 'grid', ['jquery'], ($) ->
 	offsetX = 0
 
 	options = 
-	  width: 450
+	  width: 445
 	  offsetX: 25
 	  offsetY: 25
 	  container: ".videos-grid"
@@ -35,6 +35,7 @@ define 'grid', ['jquery'], ($) ->
 				height = 0
 
 				$('jk-video').each (i) ->
+					height += 1
 					$(@).css
 						left: "#{leftpx}px"
 						top: "#{toppx}px"
@@ -44,10 +45,10 @@ define 'grid', ['jquery'], ($) ->
 					if (i+1) % cols is 0
 						leftpx = offsetX
 						toppx = toppx + 150 + options.offsetY
-						height += (150 + options.offsetY)
-					$(options.container).css
-						height: "#{height+150}px"
-					return
+				height = Math.ceil height/cols
+				$(options.container).css
+					height: "#{(150*height)+(height*options.offsetY)}px"
+				return
 
 	$(window).resize ->
 		grid.setblocks()

@@ -10,6 +10,7 @@ require.config
 		jkControllers: '/assets/jk-controllers.js'
 		grid: '/assets/grid.js'
 		underscore: '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min'
+		scroll: '/assets/scroll.min'
 
 	shim:
     angular:
@@ -18,7 +19,13 @@ require.config
     angularResource:
       deps: ['angular']
       exports: 'angularResource'
+    scroll:
+    	deps: ['jquery']
 
 
-require ['jukestation'], (jukestation) ->
+require ['jukestation', 'scroll'], (jukestation, scroll) ->
 	jukestation.init()
+
+	$('.sc-mid').mCustomScrollbar
+		theme: "light-2"
+		scrollInertia: 600

@@ -42,11 +42,9 @@ define 'jkControllers', ['angular', 'jkFactories', 'grid'], (ng, jkFactories, gr
 		$(document).keyup (event) ->
 			if event.keyCode is 27
 				searchElm.hide()
-				$('body').removeClass 'no'
 		$(document).keypress (event) ->
 				unless $('#q').is ':focus'
 					searchElm.show()
-					$('body').addClass 'no'
 					$('#q').focus()
 	]
 
