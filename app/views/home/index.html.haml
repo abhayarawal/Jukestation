@@ -17,8 +17,11 @@
 				{{ video.title }}
 		{{fxqueue}}
 	.tx-r
+		%button.button.icon-grid{:'ng-click' => "togglegrid()"}
+		%button.button.icon-mute{:'ng-click' => "mute()"}
+		%button.button.icon-volume{:'ng-click' => "unmute()"}
 		%button.button.icon-pause{:'ng-click' => "pause()"}
 		%button.button.icon-shuffle{:'ng-click' => "shuffle()"}
 		%button.button.icon-save{:'ng-click' => "sync()"}
 	.videos-grid
-		%jk-video{:'ng-repeat' => "video in playlist track by $index", :video => "video", :pushfxq => "pushfxq(video)", :remove => 'remove($index)', :undo => "undo($index)", :'repeat-edge' => true}
+		%jk-video{:'ng-repeat' => "video in playlist track by $index", :video => "video", :pushfxq => "pushfxq(video)", :playvideo => "playvideo(video)", :remove => 'remove($index)', :undo => "undo($index)", :'repeat-edge' => true}

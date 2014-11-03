@@ -35,18 +35,25 @@ define 'jkFactories', ['angular', 'angularResource', 'underscore'], (ng, ngResou
 							controls: 0
 							iv_load_policy: 3
 							showinfo: 0
+							rel: 0
 						events:
 							onReady: _ref.ready
 							onStateChange: _ref.state
 			ready: (e) ->
-				e.target.mute()
-				e.target.playVideo()
+				# e.target.mute()
+				# e.target.playVideo()
+			unmute: ->
+				@.player.unMute()
+			mute: ->
+				@.player.mute()
 			state: (e) ->
-				console.log e
+
 			play: () ->
 				@.player.playVideo()
 			pause: () ->
 				@.player.pauseVideo()
+			playvideo: (video) ->
+				@.player.loadVideoById video.vid
 			queue: []
 			shuffleState: false
 			fxqueue: []

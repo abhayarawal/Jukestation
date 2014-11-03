@@ -8,6 +8,7 @@ define 'jkDr', ['angular'], (ng) ->
 			remove: "&"
 			pushfxq: "&"
 			undo: "&"
+			playvideo: "&"
 		template: """
 		<div class="flip-container" ontouchstart="this.classList.toggle('hover');" ng-class="{deleted:video.deleted}">
 			<button class="undo button icon-reload" ng-click="undo()" ng-show="video.deleted"></button>
@@ -25,7 +26,7 @@ define 'jkDr', ['angular'], (ng) ->
 				</div>
 				<div class="back">
 					<div class="card-ctl">
-						<button class="button icon-play"></button>
+						<button class="button icon-play" ng-click="playvideo()"></button>
 						<button class="button icon-trash" ng-click="remove()"></button>
 						<button class="button icon-layers" ng-click="pushfxq()"></button>
 					</div>
