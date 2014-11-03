@@ -17,8 +17,36 @@ define 'jkFactories', ['angular', 'angularResource', 'underscore'], (ng, ngResou
 				method: 'PATCH'
 	]
 
-	jkFactories.factory 'jukePlayer', ->
+	jkFactories.factory 'jukePlayer', ['$window', ($window) ->
 		{
+			init: ->
+				_ref = @
+				vid = "XjwZAa2EjKA"
+				vid = @.queue[0].vid unless @.queue.length is 0
+				YT_url = "//www.youtube.com/iframe_api"
+				unless document.querySelector "[src='#{YT_url}']"
+		      s = document.createElement 'script'
+		      s.src = YT_url
+		      document.head.appendChild s
+				$window.onYouTubeIframeAPIReady = ->
+					_ref.player = new YT.Player 'player',
+						videoId: vid
+						playerVars:
+							controls: 0
+							iv_load_policy: 3
+							showinfo: 0
+						events:
+							onReady: _ref.ready
+							onStateChange: _ref.state
+			ready: (e) ->
+				e.target.mute()
+				e.target.playVideo()
+			state: (e) ->
+				console.log e
+			play: () ->
+				@.player.playVideo()
+			pause: () ->
+				@.player.pauseVideo()
 			queue: []
 			shuffleState: false
 			fxqueue: []
@@ -27,6 +55,7 @@ define 'jkFactories', ['angular', 'angularResource', 'underscore'], (ng, ngResou
 				angular.forEach videos, (video) ->
 					video['deleted'] = false
 					_ref.queue.push video
+				@.init()
 			pushq: (video) ->
 				@.queue.push video
 			remove: (vid) ->
@@ -43,6 +72,7 @@ define 'jkFactories', ['angular', 'angularResource', 'underscore'], (ng, ngResou
 				angular.forEach shuffled, (video, i) ->
 					_ref.queue[i] = video
 		}
+	]
 
 	jkFactories.factory 'playlist', ['Video', '$http', '$q', 'jukePlayer', (Video, $http, $q, jukePlayer) ->
 		{

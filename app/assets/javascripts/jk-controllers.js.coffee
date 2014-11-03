@@ -24,6 +24,9 @@ define 'jkControllers', ['angular', 'jkFactories', 'grid'], (ng, jkFactories, gr
 		$scope.sync = ->
 			playlist.sync()
 
+		$scope.pause = ->
+			jukePlayer.pause()
+
 		$(document).keyup (event) ->
 			if event.keyCode is 27
 				searchElm.hide()

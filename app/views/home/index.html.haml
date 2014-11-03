@@ -8,14 +8,16 @@
 					%yt-video{:video => 'v', :add => "enqueue(v)"}
 
 .player
-
+	.intrinsic-wrap 
+		#player
 .wrap
-	.white
+	.white.hidden
 		%ul.m0.p0.no-ul.ul-ib
 			%li{:'ng-repeat' => "video in queue"}
 				{{ video.title }}
 		{{fxqueue}}
 	.tx-r
+		%button.button.icon-pause{:'ng-click' => "pause()"}
 		%button.button.icon-shuffle{:'ng-click' => "shuffle()"}
 		%button.button.icon-save{:'ng-click' => "sync()"}
 	.videos-grid

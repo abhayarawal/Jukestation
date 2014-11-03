@@ -20,7 +20,6 @@ define 'jkDr', ['angular'], (ng) ->
 						<div class="meta">
 							<span class="duration">{{ video.duration | duration }}</span>
 							<h3>{{ video.title }}</h3>
-							{{ video.deleted }}
 						</div>
 					</div>
 				</div>
