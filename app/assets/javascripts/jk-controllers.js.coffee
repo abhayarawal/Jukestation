@@ -18,6 +18,9 @@ define 'jkControllers', ['angular', 'jkFactories', 'grid'], (ng, jkFactories, gr
 		$scope.remove = (entry) ->
 			playlist.remove(entry)
 
+		$scope.undo = (entry) ->
+			playlist.undo entry
+
 		$scope.sync = ->
 			playlist.sync()
 

@@ -7,8 +7,10 @@ define 'jkDr', ['angular'], (ng) ->
 			video: "="
 			remove: "&"
 			pushfxq: "&"
+			undo: "&"
 		template: """
-		<div class="flip-container" ontouchstart="this.classList.toggle('hover');">
+		<div class="flip-container" ontouchstart="this.classList.toggle('hover');" ng-class="{deleted:video.deleted}">
+			<button class="undo button icon-reload" ng-click="undo()" ng-show="video.deleted"></button>
 			<div class="flipper">
 				<div class="front">
 					<div class="card">
@@ -18,6 +20,7 @@ define 'jkDr', ['angular'], (ng) ->
 						<div class="meta">
 							<span class="duration">{{ video.duration | duration }}</span>
 							<h3>{{ video.title }}</h3>
+							{{ video.deleted }}
 						</div>
 					</div>
 				</div>

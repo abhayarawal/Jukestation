@@ -25,6 +25,7 @@ define 'jkFactories', ['angular', 'angularResource', 'underscore'], (ng, ngResou
 			sync: (videos) ->
 				_ref = @
 				angular.forEach videos, (video) ->
+					video['deleted'] = false
 					_ref.queue.push video
 			pushq: (video) ->
 				@.queue.push video
@@ -59,28 +60,32 @@ define 'jkFactories', ['angular', 'angularResource', 'underscore'], (ng, ngResou
 				angular.forEach @.playlist, (entry) ->
 					duplicate = true if video.vid is entry.vid
 				duplicate
+			undo: (entry) ->
+				@.playlist[entry]['deleted'] = false
+				Video.save @.playlist[entry]
+				jukePlayer.pushq @.playlist[entry]
 			enqueue: (entry) ->
-				duplicate = false
-				angular.forEach @.playlist, (video) ->
-					duplicate = true if video.vid is entry.vid
+				duplicate = @.exist entry
 				unless duplicate
 					jukePlayer.pushq entry
 					@.playlist.push entry
 					if @.pid
-						Video.save(entry).$promise.then (_video) ->
-							console.log "#{_video.title} saved to playlist"
+						Video.save entry
 			remove: (entry) ->
 				$oid = @.playlist[entry].vid
 				if @.pid
 					Video.remove id: $oid
+					@.playlist[entry]['deleted'] = true
+				else
+					@.playlist.splice entry, 1
 				jukePlayer.remove $oid
-				@.playlist.splice entry, 1
 			sync: ->
-				ret = $q.defer()
-				$http.post("/sync", {videos: @.playlist}
-				).success (uri) ->
-					if uri.length is 1
-						window.location = "/pl/#{uri[0]}"
+				unless @.pid
+					ret = $q.defer()
+					$http.post("/sync", {videos: @.playlist}
+					).success (uri) ->
+						if uri.length is 1
+							window.location = "/pl/#{uri[0]}"
 		}
 	]
 
@@ -101,6 +106,7 @@ define 'jkFactories', ['angular', 'angularResource', 'underscore'], (ng, ngResou
             title: entry.title.$t
             thumbnail: entry.media$group.media$thumbnail[0].url
             duration: entry.media$group.yt$duration.seconds
+            deleted: false
           _ref[i]['inqueue'] = playlist.exist _ref[i]
         ret.resolve _ref
 

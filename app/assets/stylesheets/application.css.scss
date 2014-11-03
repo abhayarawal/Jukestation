@@ -231,9 +231,14 @@ jk-video
   @include transform-style(preserve-3d);
   @include transform-origin(center center);
 
-  &:hover
+  .undo
   {
-  	z-index: 10;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -30px 0 0 -30px;
+    color: rgb(190, 190, 190);
+    z-index: 1;
   }
 
   .card
@@ -334,37 +339,52 @@ jk-video
 
 .flip-container {
   @include perspective(1000);
-}
-  .flip-container:hover .flipper, .flip-container.hover .flipper {
+
+  &.deleted
+  {
+    .flipper
+    {
+      opacity: 0.2;
+    }
+
+    &:hover .flipper, &.hover .flipper
+    {
+      @include transform(rotateY(0deg));
+    }
+  }
+
+  &:hover .flipper, &.hover .flipper {
     @include transform(rotateY(180deg));
   }
 
-.flip-container, .front, .back {
-  width: 450px;
-  height: 150px;
-}
+  &, .front, .back {
+    width: 450px;
+    height: 150px;
+  }
 
-.flipper {
-  @include transition (0.6s);
-  @include transform-style(preserve-3d);
-  position: relative;
-}
+  .flipper {
+    @include transition (0.6s);
+    @include transform-style(preserve-3d);
+    position: relative;
+  }
 
-.front, .back {
-  @include backface-visibility(hidden);
-  position: absolute;
-  top: 0;
-  left: 0;
-}
+  .front, .back {
+    @include backface-visibility(hidden);
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
 
-.front {
-  z-index: 2;
-  @include transform(rotateY(0deg));
-}
+  .front {
+    z-index: 2;
+    @include transform(rotateY(0deg));
+  }
 
-.back {
-  @include transform(rotateY(180deg));
+  .back {
+    @include transform(rotateY(180deg));
+  }
 }
+  
 
 .spinner 
 {

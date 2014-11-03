@@ -19,7 +19,8 @@ module Api
 			videos = params[:videos]
 			playlist = current_playlist
 			videos.each do |video|
-				video.delete "inqueue"
+				video.delete "inqueue" if video.has_key? "inqueue"
+				video.delete "deleted" if video.has_key? "deleted"
 				tmp = Video.new video
 				playlist.videos << Video.new(video) if tmp.valid?
 			end
