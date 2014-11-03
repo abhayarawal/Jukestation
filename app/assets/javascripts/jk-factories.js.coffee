@@ -1,4 +1,4 @@
-define 'jkFactories', ['angular', 'angularResource'], (ng, ngResource) ->
+define 'jkFactories', ['angular', 'angularResource', 'underscore'], (ng, ngResource, _) ->
 	jkFactories = ng.module 'Jukestation.jkFactories', ['ngResource']
 
 	_csrf = $('meta[name=csrf-token]').attr('content')
@@ -17,7 +17,33 @@ define 'jkFactories', ['angular', 'angularResource'], (ng, ngResource) ->
 				method: 'PATCH'
 	]
 
-	jkFactories.factory 'jukePlayer', ['Video', '$http', '$q', (Video, $http, $q) ->
+	jkFactories.factory 'jukePlayer', ->
+		{
+			queue: []
+			shuffleState: false
+			fxqueue: []
+			sync: (videos) ->
+				_ref = @
+				angular.forEach videos, (video) ->
+					_ref.queue.push video
+			pushq: (video) ->
+				@.queue.push video
+			remove: (vid) ->
+				_ref = @
+				angular.forEach @.queue, (video, i) ->
+					_ref.queue.splice i, 1 if vid is video.vid
+				angular.forEach @.fxqueue, (video, i) ->
+					_ref.fxqueue.splice i, 1 if vid is video.vid
+			pushfxq: (video) ->
+				@.fxqueue.push video
+			shuffle:  ->
+				_ref = @
+				shuffled = _.shuffle @.queue 
+				angular.forEach shuffled, (video, i) ->
+					_ref.queue[i] = video
+		}
+
+	jkFactories.factory 'playlist', ['Video', '$http', '$q', 'jukePlayer', (Video, $http, $q, jukePlayer) ->
 		{
 			init: ->
 				_ref = @
@@ -25,6 +51,7 @@ define 'jkFactories', ['angular', 'angularResource'], (ng, ngResource) ->
 					_ref.pid = list[0] 
 					angular.forEach list[1], (video) ->
 						_ref.playlist.push video
+					jukePlayer.sync _ref.playlist
 			pid: false,
 			playlist: [],
 			exist: (video) ->
@@ -37,6 +64,7 @@ define 'jkFactories', ['angular', 'angularResource'], (ng, ngResource) ->
 				angular.forEach @.playlist, (video) ->
 					duplicate = true if video.vid is entry.vid
 				unless duplicate
+					jukePlayer.pushq entry
 					@.playlist.push entry
 					if @.pid
 						Video.save(entry).$promise.then (_video) ->
@@ -45,6 +73,7 @@ define 'jkFactories', ['angular', 'angularResource'], (ng, ngResource) ->
 				$oid = @.playlist[entry].vid
 				if @.pid
 					Video.remove id: $oid
+				jukePlayer.remove $oid
 				@.playlist.splice entry, 1
 			sync: ->
 				ret = $q.defer()
@@ -55,7 +84,7 @@ define 'jkFactories', ['angular', 'angularResource'], (ng, ngResource) ->
 		}
 	]
 
-	jkFactories.factory 'jkSearch', ['$http', '$q', 'jukePlayer', ($http, $q, jukePlayer) ->
+	jkFactories.factory 'jkSearch', ['$http', '$q', 'playlist', ($http, $q, playlist) ->
 		fetch_yt_videos: (query) ->
 			api = "//gdata.youtube.com/feeds/api/videos?category=Music"
 			options = 
@@ -72,7 +101,7 @@ define 'jkFactories', ['angular', 'angularResource'], (ng, ngResource) ->
             title: entry.title.$t
             thumbnail: entry.media$group.media$thumbnail[0].url
             duration: entry.media$group.yt$duration.seconds
-          _ref[i]['inqueue'] = jukePlayer.exist _ref[i]
+          _ref[i]['inqueue'] = playlist.exist _ref[i]
         ret.resolve _ref
 
 			# Return the videos

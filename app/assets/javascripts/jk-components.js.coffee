@@ -6,6 +6,7 @@ define 'jkDr', ['angular'], (ng) ->
 		scope: 
 			video: "="
 			remove: "&"
+			pushfxq: "&"
 		template: """
 		<div class="flip-container" ontouchstart="this.classList.toggle('hover');">
 			<div class="flipper">
@@ -24,7 +25,7 @@ define 'jkDr', ['angular'], (ng) ->
 					<div class="card-ctl">
 						<button class="button icon-play"></button>
 						<button class="button icon-trash" ng-click="remove()"></button>
-						<button class="button icon-layers"></button>
+						<button class="button icon-layers" ng-click="pushfxq()"></button>
 					</div>
 				</div>
 			</div>

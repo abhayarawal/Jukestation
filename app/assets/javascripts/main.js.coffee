@@ -9,6 +9,7 @@ require.config
 		jkDr: '/assets/jk-components.js'
 		jkControllers: '/assets/jk-controllers.js'
 		grid: '/assets/grid.js'
+		underscore: '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min'
 
 	shim:
     angular:

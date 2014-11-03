@@ -1,16 +1,25 @@
 define 'jkControllers', ['angular', 'jkFactories', 'grid'], (ng, jkFactories, grid) ->
 	jkControllers = ng.module 'Jukestation.jkControllers', ['Jukestation.jkFactories']
 
-	jkControllers.controller 'jukeController', ['$scope', 'jukePlayer', ($scope, jukePlayer) ->
-		jukePlayer.init()
-		$scope.playlist = jukePlayer.playlist
+	jkControllers.controller 'jukeController', ['$scope', 'jukePlayer', 'playlist', ($scope, jukePlayer, playlist) ->
+		playlist.init()
+		$scope.playlist = playlist.playlist
 		searchElm = $('.search-wrap')
 
+		$scope.queue = jukePlayer.queue
+		$scope.fxqueue = jukePlayer.fxqueue
+
+		$scope.pushfxq = (video) ->
+			jukePlayer.pushfxq video
+
+		$scope.shuffle = ->
+			jukePlayer.shuffle()
+
 		$scope.remove = (entry) ->
-			jukePlayer.remove(entry)
+			playlist.remove(entry)
 
 		$scope.sync = ->
-			jukePlayer.sync()
+			playlist.sync()
 
 		$(document).keyup (event) ->
 			if event.keyCode is 27
@@ -28,14 +37,14 @@ define 'jkControllers', ['angular', 'jkFactories', 'grid'], (ng, jkFactories, gr
 			grid() if scope.$last
 		)
 
-	jkControllers.controller 'ytsController', ['$scope', 'jkSearch', 'jukePlayer', ($scope, jkSearch, jukePlayer) ->
+	jkControllers.controller 'ytsController', ['$scope', 'jkSearch', 'playlist', ($scope, jkSearch, playlist) ->
 		$scope.$watch 'query', (q) ->
 			defer = jkSearch.fetch_yt_videos q
 			defer.promise.then (d) ->
 				$scope.ytvideos = d
 
 		$scope.enqueue = (entry) ->
-			jukePlayer.enqueue entry
+			playlist.enqueue entry
 	]
 
 	jkControllers
