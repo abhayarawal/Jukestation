@@ -123,6 +123,10 @@ define 'jkFactories', ['angular', 'angularResource', 'underscore'], (ng, ngResou
 					).success (uri) ->
 						if uri.length is 1
 							window.location = "/pl/#{uri[0]}"
+				else
+					_ref = @
+					angular.forEach @.playlist, (video, i) ->
+						_ref.playlist.splice i, 1 if video.deleted
 		}
 	]
 

@@ -51,6 +51,7 @@ define 'jkDr', ['angular'], (ng) ->
 				<span class="button icon-check type3" ng-show="video.inqueue"></span>
 			</div>
 			<h3>{{ video.title }}</h3>
+			{{ video.duration | duration }}
 		"""
 
 	jkDr
