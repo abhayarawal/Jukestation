@@ -8,9 +8,13 @@ define 'jkControllers', ['angular', 'jkFactories', 'grid'], (ng, jkFactories, gr
 
 		$scope.queue = jukePlayer.queue
 		$scope.fxqueue = jukePlayer.fxqueue
+		$scope.playing = false
 
 		$scope.seekvolume = (n) ->
 			jukePlayer.volume n
+
+		$scope.$watch (() -> jukePlayer.playing), (playing) ->
+			$scope.playing = playing
 
 		$scope.seekTo = (n) ->
 			jukePlayer.seekTo n
@@ -38,8 +42,11 @@ define 'jkControllers', ['angular', 'jkFactories', 'grid'], (ng, jkFactories, gr
 		$scope.sync = ->
 			playlist.sync()
 
-		$scope.pause = ->
-			jukePlayer.pause()
+		$scope.playpause = ->
+			if $scope.playing
+				jukePlayer.pause()
+			else
+				jukePlayer.play()
 
 		$scope.playvideo = (video) ->
 			jukePlayer.playvideo video
