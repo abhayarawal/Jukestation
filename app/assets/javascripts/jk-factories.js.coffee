@@ -20,7 +20,6 @@ define 'jkFactories', ['angular', 'angularResource', 'underscore'], (ng, ngResou
 			ready: false
 			playing: false
 			init: ->
-				_ref = @
 				vid = "XjwZAa2EjKA"
 				vid = @.queue[0].vid unless @.queue.length is 0
 				YT_url = "//www.youtube.com/iframe_api"
@@ -28,8 +27,8 @@ define 'jkFactories', ['angular', 'angularResource', 'underscore'], (ng, ngResou
 		      s = document.createElement 'script'
 		      s.src = YT_url
 		      document.head.appendChild s
-				$window.onYouTubeIframeAPIReady = ->
-					_ref.player = new YT.Player 'player',
+				$window.onYouTubeIframeAPIReady = (->
+					@.player = new YT.Player 'player',
 						videoId: vid
 						playerVars:
 							controls: 0
@@ -37,15 +36,17 @@ define 'jkFactories', ['angular', 'angularResource', 'underscore'], (ng, ngResou
 							showinfo: 0
 							rel: 0
 						events:
-							onReady: ->
-								_ref.ready = true
-							onStateChange: (e) ->
-								if e.data is YT.PlayerState.PLAYING
-									_ref.playing = true
-								else if e.data is YT.PlayerState.PAUSED
-						    	_ref.playing = false
-						    else if e.data is YT.PlayerState.ENDED
-						    	_ref.playing = false
+							onReady: (->
+								@.ready = true
+							).bind @
+							onStateChange: @.stateChanged.bind @
+					).bind @
+			stateChanged: (e) ->
+				@.playing =	switch e.data
+					when YT.PlayerState.PLAYING then true
+					when YT.PlayerState.PAUSED then false
+					when YT.PlayerState.ENDED then false
+					else false
 			unmute: ->
 				@.player.unMute()
 			mute: ->
@@ -69,38 +70,35 @@ define 'jkFactories', ['angular', 'angularResource', 'underscore'], (ng, ngResou
 			shuffleState: false
 			fxqueue: []
 			sync: (videos) ->
-				_ref = @
-				angular.forEach videos, (video) ->
+				angular.forEach videos, (video) =>
 					video['deleted'] = false
-					_ref.queue.push video
+					@.queue.push video
 				@.init()
 			pushq: (video) ->
 				@.queue.push video
 			remove: (vid) ->
-				_ref = @
-				angular.forEach @.queue, (video, i) ->
-					_ref.queue.splice i, 1 if vid is video.vid
-				angular.forEach @.fxqueue, (video, i) ->
-					_ref.fxqueue.splice i, 1 if vid is video.vid
+				angular.forEach @.queue, (video, i) =>
+					@.queue.splice i, 1 if vid is video.vid
+				angular.forEach @.fxqueue, (video, i) =>
+					@.fxqueue.splice i, 1 if vid is video.vid
 			pushfxq: (video) ->
 				@.fxqueue.push video
 			shuffle:  ->
-				_ref = @
 				shuffled = _.shuffle @.queue 
-				angular.forEach shuffled, (video, i) ->
-					_ref.queue[i] = video
+				angular.forEach shuffled, (video, i) =>
+					@.queue[i] = video
 		}
 	]
 
 	jkFactories.factory 'playlist', ['Video', '$http', '$q', 'jukePlayer', (Video, $http, $q, jukePlayer) ->
 		{
 			init: ->
-				_ref = @
-				Video.query().$promise.then (list) ->
-					_ref.pid = list[0] 
+				Video.query().$promise.then (list) =>
+					@.pid = list[0] 
 					angular.forEach list[1], (video) ->
-						_ref.playlist.push video
-					jukePlayer.sync _ref.playlist
+						@.playlist.push video
+					, @
+					jukePlayer.sync @.playlist
 			pid: false,
 			playlist: [],
 			exist: (video) ->
@@ -135,13 +133,12 @@ define 'jkFactories', ['angular', 'angularResource', 'underscore'], (ng, ngResou
 						if uri.length is 1
 							window.location = "/pl/#{uri[0]}"
 				else
-					_ref = @
 					splice = []
 					angular.forEach @.playlist, (video, i) ->
 						splice.push i if video.deleted
 					splice.reverse()
 					for i in splice
-						_ref.playlist.splice i, 1 
+						@.playlist.splice i, 1 
 		}
 	]
 
