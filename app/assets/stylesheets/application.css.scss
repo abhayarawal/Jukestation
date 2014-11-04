@@ -97,23 +97,12 @@ body
     position: absolute;
     @include transition(height 0.4s ease);
 
-    span
-    {
-      opacity: 0;
-      @include transition(all 0.2s ease);
-    }
-
     &:hover
     {
       .seeker
       {
         height: 30px;
         top: 0px;
-      }
-
-      span
-      {
-        opacity: 1;
       }
     }
 
@@ -155,11 +144,11 @@ body
 
   &.seek
   {
-    background: rgba(184, 184, 184, 0.5);
+    background: rgba(112, 118, 124, 0.66);
     span { color: rgba(255, 255, 255, 0.52); }
     .progress
     {
-      background: rgba(44, 44, 44, 0.39);
+      background: rgba(155, 164, 173, 0.66);
     }
   }
 
@@ -168,7 +157,7 @@ body
     background: rgba(255, 255, 255, 0.5);
     span
     {
-      color: rgb(56, 56, 56);
+      color: #626467;
     }
     .progress
     {

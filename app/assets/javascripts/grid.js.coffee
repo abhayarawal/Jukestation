@@ -25,6 +25,10 @@ define 'grid', ['jquery'], ($) ->
 					$(@).css
 						left: "0px"
 						top: "0px"
+				.promise().done ->
+					setTimeout ->
+						$(options.container).css height: "150px"
+					, 500
 			return false
 
 		setblocks: ->

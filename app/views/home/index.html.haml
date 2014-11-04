@@ -30,7 +30,7 @@
 			%jk-video{:'ng-repeat' => "video in playlist track by $index", :video => "video", :pushfxq => "pushfxq(video)", :playvideo => "playvideo(video)", :remove => 'remove($index)', :undo => "undo($index)", :'repeat-edge' => true}
 	.sc-bottom
 		%section
-			.vl
-				%jk-seek{:action => "seekvolume(n)", :modclass => "volume", :init => "80", :txt => "Volume"}
 			.pl
 				%jk-seek{:action => "seekTo(n)", :seek => "seek", :modclass => "seek", :init => "0", :txt => "Video"}
+			.vl
+				%jk-seek{:action => "seekvolume(n)", :modclass => "volume", :init => "80", :txt => "Volume"}

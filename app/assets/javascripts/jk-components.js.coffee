@@ -35,7 +35,8 @@ define 'jkDr', ['angular'], (ng) ->
 			scope.percent = scope.init
 			if attrs.seek
 				scope.$watch 'seek', ->
-					scope.percent = scope.seek
+					unless isNaN scope.seek
+						scope.percent = scope.seek
 			elm = $(element).find '.seeker'
 			elm.on 'mousedown', (e) ->
 		    $this = $(this)
