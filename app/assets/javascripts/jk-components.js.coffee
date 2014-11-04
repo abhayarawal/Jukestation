@@ -4,20 +4,20 @@ define 'jkDr', ['angular'], (ng) ->
 	jkDr.directive 'jkButton', ->
 		restrict: "E"
 		scope:
-			fstclass: "@"
-			scdclass: "@"
-			fstaction: "&"
-			scdaction: "&"
+			jkclass: "@"
+			altclass: "@"
+			jkaction: "&"
+			altaction: "&"
 		link: (scope, element, attrs) ->
 			state = true
-			scope.vclass = scope.fstclass
+			scope.vclass = scope.jkclass
 			scope.action = ->
 				if state
-					scope.vclass = scope.scdclass
-					scope.fstaction()
+					scope.vclass = scope.altclass
+					scope.jkaction()
 				else
-					scope.vclass = scope.fstclass
-					scope.scdaction()
+					scope.vclass = scope.jkclass
+					scope.altaction()
 				state = !state
 		template: """
 			<button class="button {{vclass}}" ng-click="action()"></button>

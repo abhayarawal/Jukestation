@@ -27,6 +27,7 @@ define 'jkFactories', ['angular', 'angularResource', 'underscore'], (ng, ngResou
 		      s = document.createElement 'script'
 		      s.src = YT_url
 		      document.head.appendChild s
+		    # Binding with native .bind
 				$window.onYouTubeIframeAPIReady = (->
 					@.player = new YT.Player 'player',
 						videoId: vid
@@ -38,6 +39,7 @@ define 'jkFactories', ['angular', 'angularResource', 'underscore'], (ng, ngResou
 						events:
 							onReady: (->
 								@.ready = true
+								$('.loading').addClass 'complete'
 							).bind @
 							onStateChange: @.stateChanged.bind @
 					).bind @
@@ -93,8 +95,10 @@ define 'jkFactories', ['angular', 'angularResource', 'underscore'], (ng, ngResou
 	jkFactories.factory 'playlist', ['Video', '$http', '$q', 'jukePlayer', (Video, $http, $q, jukePlayer) ->
 		{
 			init: ->
+				# Binding with => _this
 				Video.query().$promise.then (list) =>
 					@.pid = list[0] 
+					# Binding with @ as argument
 					angular.forEach list[1], (video) ->
 						@.playlist.push video
 					, @

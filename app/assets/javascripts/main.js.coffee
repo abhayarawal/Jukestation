@@ -26,6 +26,10 @@ require.config
 require ['jukestation', 'scroll'], (jukestation, scroll) ->
 	jukestation.init()
 
+	$('.search-wrap').mCustomScrollbar
+		theme: "dark-2"
+		scrollInertia: 300
+
 	$('.sc-mid').mCustomScrollbar
 		theme: "light-2"
 		scrollInertia: 300
