@@ -1,8 +1,6 @@
 define 'jkFactories', ['angular', 'angularResource', 'underscore'], (ng, ngResource, _) ->
 	jkFactories = ng.module 'Jukestation.jkFactories', ['ngResource']
 
-	_csrf = $('meta[name=csrf-token]').attr('content')
-
 	jkFactories.config ['$httpProvider', ($httpProvider) ->
 		$httpProvider.defaults.headers.patch = { 'Content-Type': 'application/json;charset=utf-8' }
 		$httpProvider.defaults.headers.common['X-CSRF-Token'] = $('meta[name=csrf-token]').attr('content')
@@ -17,8 +15,10 @@ define 'jkFactories', ['angular', 'angularResource', 'underscore'], (ng, ngResou
 				method: 'PATCH'
 	]
 
-	jkFactories.factory 'jukePlayer', ['$window', ($window) ->
+	jkFactories.factory 'jukePlayer', ['$window', '$rootScope', ($window, $rootScope) ->
 		{
+			ready: false
+			playing: false
 			init: ->
 				_ref = @
 				vid = "XjwZAa2EjKA"
@@ -37,23 +37,34 @@ define 'jkFactories', ['angular', 'angularResource', 'underscore'], (ng, ngResou
 							showinfo: 0
 							rel: 0
 						events:
-							onReady: _ref.ready
-							onStateChange: _ref.state
-			ready: (e) ->
-				# e.target.mute()
-				# e.target.playVideo()
+							onReady: ->
+								_ref.ready = true
+							onStateChange: (e) ->
+								if e.data is YT.PlayerState.PLAYING
+									_ref.playing = true
+								else if e.data is YT.PlayerState.PAUSED
+						    	_ref.playing = false
+						    else if e.data is YT.PlayerState.ENDED
+						    	_ref.playing = false
 			unmute: ->
 				@.player.unMute()
 			mute: ->
 				@.player.mute()
-			state: (e) ->
-
 			play: () ->
 				@.player.playVideo()
 			pause: () ->
 				@.player.pauseVideo()
 			playvideo: (video) ->
 				@.player.loadVideoById video.vid
+			volume: (n) ->
+				@.player.setVolume n
+			seek: ->
+				if @.ready
+					@.player.getCurrentTime()/@.player.getDuration()*100
+				else
+					0
+			seekTo: (n) ->
+				@.player.seekTo Math.floor(n/100*@.player.getDuration()), true
 			queue: []
 			shuffleState: false
 			fxqueue: []
@@ -125,8 +136,12 @@ define 'jkFactories', ['angular', 'angularResource', 'underscore'], (ng, ngResou
 							window.location = "/pl/#{uri[0]}"
 				else
 					_ref = @
+					splice = []
 					angular.forEach @.playlist, (video, i) ->
-						_ref.playlist.splice i, 1 if video.deleted
+						splice.push i if video.deleted
+					splice.reverse()
+					for i in splice
+						_ref.playlist.splice i, 1 
 		}
 	]
 

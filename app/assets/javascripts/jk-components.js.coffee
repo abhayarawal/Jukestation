@@ -1,6 +1,55 @@
 define 'jkDr', ['angular'], (ng) ->
 	jkDr = ng.module 'Jukestation.jkDr', []
 
+	jkDr.directive 'jkButton', ->
+		restrict: "E"
+		scope:
+			fstclass: "@"
+			scdclass: "@"
+			fstaction: "&"
+			scdaction: "&"
+		link: (scope, element, attrs) ->
+			state = true
+			scope.vclass = scope.fstclass
+			scope.action = ->
+				if state
+					scope.vclass = scope.scdclass
+					scope.fstaction()
+				else
+					scope.vclass = scope.fstclass
+					scope.scdaction()
+				state = !state
+		template: """
+			<button class="button {{vclass}}" ng-click="action()"></button>
+		"""
+
+	jkDr.directive 'jkSeek', ->
+		restrict: "E"
+		scope:
+			modclass: "@"
+			action: "&"
+			init: "@"
+			txt: "@"
+			seek: "="
+		link: (scope, element, attrs) ->
+			scope.percent = scope.init
+			if attrs.seek
+				scope.$watch 'seek', ->
+					scope.percent = scope.seek
+			elm = $(element).find '.seeker'
+			elm.on 'mousedown', (e) ->
+		    $this = $(this)
+		    x = e.pageX - $this.offset().left
+		    scope.percent = x / $this.width() * 100
+		    scope.action {n: scope.percent}
+		    scope.$apply()
+		template: """
+			<div class="seeker {{modclass}}">
+				<span>{{txt}}</span>
+				<div class="progress" style="transform: scaleX({{percent/100}})"></div>
+			</div>
+		"""
+
 	jkDr.directive 'jkVideo', ->
 		restrict: 'E'
 		scope: 

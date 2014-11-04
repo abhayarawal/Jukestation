@@ -85,6 +85,90 @@ body
   bottom: 0px;
   height: 10%;
   z-index: 15;
+  padding-top: 15px;
+  font-size: 0;
+
+  section
+  {
+    width: 100%;
+    height: 30px;
+    left: 0px;
+    bottom: 0px;
+    position: absolute;
+    @include transition(all 0.1s ease);
+    opacity: 0.5;
+
+    &:hover
+    {
+      opacity: 1;
+    }
+
+    .vl, .pl
+    {
+      display: inline-block;
+      vertical-align: top;
+      width: 30%;
+      font-size: 16px;
+      text-align: center;
+
+      &.pl
+
+      {
+        width: 70%;
+      }
+
+      span
+      {
+        z-index: 5;
+        text-transform: uppercase;
+        line-height: 30px;
+        color: white;
+        position: relative;
+      }
+    }
+  }
+}
+
+.seeker
+{
+  width: 100%;
+  height: 30px;
+  background: white;
+  display: block;
+  cursor: pointer;
+  position: relative;
+
+  &.seek
+  {
+    background: rgba(184, 184, 184, 0.5);
+
+    .progress
+    {
+      background: rgba(44, 44, 44, 0.39);
+    }
+  }
+
+  &.volume
+  {
+    background: rgba(66, 87, 102, 0.38);
+
+    .progress
+    {
+      background: rgba(226, 226, 226, 0.11);
+    }
+  }
+
+  .progress
+  {
+    position: absolute;
+    height: 100%;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    @include transform-origin(0 0);
+    @include transition(all 0.2s ease);
+    z-index: 1;
+  }
 }
 
 .button

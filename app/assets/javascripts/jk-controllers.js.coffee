@@ -1,13 +1,24 @@
 define 'jkControllers', ['angular', 'jkFactories', 'grid'], (ng, jkFactories, grid) ->
 	jkControllers = ng.module 'Jukestation.jkControllers', ['Jukestation.jkFactories']
 
-	jkControllers.controller 'jukeController', ['$scope', 'jukePlayer', 'playlist', ($scope, jukePlayer, playlist) ->
+	jkControllers.controller 'jukeController', ['$scope', '$interval', 'jukePlayer', 'playlist', ($scope, $interval, jukePlayer, playlist) ->
 		playlist.init()
 		$scope.playlist = playlist.playlist
 		searchElm = $('.search-wrap')
 
 		$scope.queue = jukePlayer.queue
 		$scope.fxqueue = jukePlayer.fxqueue
+
+		$scope.seekvolume = (n) ->
+			jukePlayer.volume n
+
+		$scope.seekTo = (n) ->
+			jukePlayer.seekTo n
+
+		$interval ->
+			if jukePlayer.playing
+				$scope.seek = jukePlayer.seek()
+		, 100
 
 		$scope.pushfxq = (video) ->
 			jukePlayer.pushfxq video

@@ -28,4 +28,4 @@ require ['jukestation', 'scroll'], (jukestation, scroll) ->
 
 	$('.sc-mid').mCustomScrollbar
 		theme: "light-2"
-		scrollInertia: 600
+		scrollInertia: 300
