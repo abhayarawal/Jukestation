@@ -18,7 +18,7 @@
 		{{fxqueue}}
 	.tx-r.sc-top
 		%button.button{:'ng-class' => "{'icon-pause': playing, 'icon-play': !playing}",:'ng-click' => "playpause()"}
-		%jk-button{:jkclass => "icon-mute", :jkaction => "mute()", :altclass => "icon-volume", :altaction => "unmute()"}
+		%button.button{:'ng-class' => "{'icon-mute': !muted, 'icon-volume': muted}",:'ng-click' => "mute()"}
 		%button.button.icon-skip-back
 		%button.button.icon-skip-forward
 		%button.button.icon-grid{:'ng-click' => "togglegrid()"}		

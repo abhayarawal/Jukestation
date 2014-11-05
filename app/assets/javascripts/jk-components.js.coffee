@@ -1,28 +1,6 @@
 define 'jkDr', ['angular'], (ng) ->
 	jkDr = ng.module 'Jukestation.jkDr', []
 
-	jkDr.directive 'jkButton', ->
-		restrict: "E"
-		scope:
-			jkclass: "@"
-			altclass: "@"
-			jkaction: "&"
-			altaction: "&"
-		link: (scope, element, attrs) ->
-			state = true
-			scope.vclass = scope.jkclass
-			scope.action = ->
-				if state
-					scope.vclass = scope.altclass
-					scope.jkaction()
-				else
-					scope.vclass = scope.jkclass
-					scope.altaction()
-				state = !state
-		template: """
-			<button class="button {{vclass}}" ng-click="action()"></button>
-		"""
-
 	jkDr.directive 'jkSeek', ->
 		restrict: "E"
 		scope:
@@ -66,11 +44,11 @@ define 'jkDr', ['angular'], (ng) ->
 				<div class="front">
 					<div class="card">
 						<div class="thumbnail">
-							<img ng-src="{{ video.thumbnail }}" alt="">
+							<img ng-src="{{ ::video.thumbnail }}" alt="">
 						</div>
 						<div class="meta">
-							<span class="duration">{{ video.duration | duration }}</span>
-							<h3>{{ video.title }}</h3>
+							<span class="duration">{{ ::video.duration | duration }}</span>
+							<h3>{{ ::video.title }}</h3>
 						</div>
 					</div>
 				</div>
@@ -96,12 +74,12 @@ define 'jkDr', ['angular'], (ng) ->
 				scope.video.inqueue = true
 		template: """
 			<div class="thumbnail">
-				<img ng-src="{{ video.thumbnail }}" alt="">
+				<img ng-src="{{ ::video.thumbnail }}" alt="">
 				<button class="button icon-plus type2" ng-hide="video.inqueue" ng-click="queue()"></button>
 				<span class="button icon-check type3" ng-show="video.inqueue"></span>
 			</div>
-			<h3>{{ video.title }}</h3>
-			{{ video.duration | duration }}
+			<h3>{{ ::video.title }}</h3>
+			{{ ::video.duration | duration }}
 		"""
 
 	jkDr

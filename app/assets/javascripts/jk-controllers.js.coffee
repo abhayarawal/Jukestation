@@ -9,6 +9,7 @@ define 'jkControllers', ['angular', 'jkFactories', 'grid'], (ng, jkFactories, gr
 		$scope.queue = jukePlayer.queue
 		$scope.fxqueue = jukePlayer.fxqueue
 		$scope.playing = false
+		$scope.muted = false
 
 		$scope.seekvolume = (n) ->
 			jukePlayer.volume n
@@ -52,10 +53,11 @@ define 'jkControllers', ['angular', 'jkFactories', 'grid'], (ng, jkFactories, gr
 			jukePlayer.playvideo video
 
 		$scope.mute = ->
-			jukePlayer.mute()
-
-		$scope.unmute = ->
-			jukePlayer.unmute()
+			if $scope.muted
+				jukePlayer.unmute()
+			else
+				jukePlayer.mute()
+			$scope.muted = !$scope.muted
 
 		$(document).keyup (event) ->
 			if event.keyCode is 27
