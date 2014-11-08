@@ -10,6 +10,7 @@ define 'jkControllers', ['angular', 'jkFactories', 'grid'], (ng, jkFactories, gr
 		$scope.fxqueue = jukePlayer.fxqueue
 		$scope.playing = false
 		$scope.muted = false
+		$scope.shuffled = false
 
 		$scope.seekvolume = (n) ->
 			jukePlayer.volume n
@@ -32,7 +33,8 @@ define 'jkControllers', ['angular', 'jkFactories', 'grid'], (ng, jkFactories, gr
 			grid.togglegrid()
 
 		$scope.shuffle = ->
-			jukePlayer.shuffle()
+			$scope.shuffled = !$scope.shuffled
+			playlist.shuffle $scope.shuffled
 
 		$scope.remove = (entry) ->
 			playlist.remove(entry)

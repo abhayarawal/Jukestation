@@ -17,12 +17,12 @@
 				{{ video.title }}
 		{{fxqueue}}
 	.tx-r.sc-top
-		%button.button{:'ng-class' => "{'icon-pause': playing, 'icon-play': !playing}",:'ng-click' => "playpause()"}
-		%button.button{:'ng-class' => "{'icon-mute': !muted, 'icon-volume': muted}",:'ng-click' => "mute()"}
+		%button.button{:'ng-class' => "{'icon-pause': playing, 'icon-play': !playing}", :'ng-click' => "playpause()"}
+		%button.button{:'ng-class' => "{'icon-mute': !muted, 'icon-volume': muted}", :'ng-click' => "mute()"}
 		%button.button.icon-skip-back
 		%button.button.icon-skip-forward
 		%button.button.icon-grid{:'ng-click' => "togglegrid()"}		
-		%button.button.icon-shuffle{:'ng-click' => "shuffle()"}
+		%button.button.icon-shuffle{:'ng-click' => "shuffle()", :'ng-class' => "{type4:shuffled}"}
 		%button.button.icon-save{:'ng-click' => "sync()"}
 		%button.button.icon-help
 	.sc-mid

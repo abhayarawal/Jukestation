@@ -20,8 +20,8 @@ define 'jkFactories', ['angular', 'angularResource', 'underscore'], (ng, ngResou
 			ready: false
 			playing: false
 			init: ->
-				vid = "XjwZAa2EjKA"
-				vid = @.queue[0].vid unless @.queue.length is 0
+				@.corrente = corrente = {vid: "XjwZAa2EjKA"}
+				@.corrente = corrente = @.queue[0] unless @.queue.length is 0
 				YT_url = "//www.youtube.com/iframe_api"
 				unless document.querySelector "[src='#{YT_url}']"
 		      s = document.createElement 'script'
@@ -30,7 +30,7 @@ define 'jkFactories', ['angular', 'angularResource', 'underscore'], (ng, ngResou
 		    # Binding with native .bind
 				$window.onYouTubeIframeAPIReady = (->
 					@.player = new YT.Player 'player',
-						videoId: vid
+						videoId: corrente.vid
 						playerVars:
 							controls: 0
 							iv_load_policy: 3
@@ -44,11 +44,24 @@ define 'jkFactories', ['angular', 'angularResource', 'underscore'], (ng, ngResou
 							onStateChange: @.stateChanged.bind @
 					).bind @
 			stateChanged: (e) ->
-				@.playing =	switch e.data
-					when YT.PlayerState.PLAYING then true
-					when YT.PlayerState.PAUSED then false
-					when YT.PlayerState.ENDED then false
-					else false
+				@.playing =	if e.data is YT.PlayerState.PLAYING then true else false
+				if e.data is YT.PlayerState.ENDED
+					@.next()
+			track: 0
+			corrente: undefined
+			shuffled: false
+			next: ->
+				if @.fxqueue.length is 0
+					unless @.track+1 is @.queue.length
+						@.track += 1
+					else
+						@.track = 0
+					@.corrente = @.queue[@.track]
+					@.player.loadVideoById @.corrente.vid
+					@.player.stopVideo() if @.track is 0
+				else
+					video = @.fxqueue.shift()
+					@.player.loadVideoById video.vid
 			unmute: ->
 				@.player.unMute()
 			mute: ->
@@ -59,6 +72,15 @@ define 'jkFactories', ['angular', 'angularResource', 'underscore'], (ng, ngResou
 				@.player.pauseVideo()
 			playvideo: (video) ->
 				@.player.loadVideoById video.vid
+				if @.shuffled
+					@.shuffle true, video
+					@.track = 0
+				else
+					duplicate = 0
+					angular.forEach @.queue, (entry, i) ->
+						duplicate = i if video.vid is entry.vid
+					@.track = duplicate
+				@.corrente = video
 			volume: (n) ->
 				@.player.setVolume n
 			seek: ->
@@ -69,13 +91,14 @@ define 'jkFactories', ['angular', 'angularResource', 'underscore'], (ng, ngResou
 			seekTo: (n) ->
 				@.player.seekTo Math.floor(n/100*@.player.getDuration()), true
 			queue: []
-			shuffleState: false
 			fxqueue: []
 			sync: (videos) ->
+				@.queue.splice 0, @.queue.length
 				angular.forEach videos, (video) =>
 					video['deleted'] = false
 					@.queue.push video
-				@.init()
+				
+				@.init() unless @.ready
 			pushq: (video) ->
 				@.queue.push video
 			remove: (vid) ->
@@ -85,10 +108,26 @@ define 'jkFactories', ['angular', 'angularResource', 'underscore'], (ng, ngResou
 					@.fxqueue.splice i, 1 if vid is video.vid
 			pushfxq: (video) ->
 				@.fxqueue.push video
-			shuffle:  ->
-				shuffled = _.shuffle @.queue 
-				angular.forEach shuffled, (video, i) =>
-					@.queue[i] = video
+			shuffle: (jk, video = undefined)->
+				@.shuffled = jk
+				if jk
+					shuffled = _.shuffle @.queue 
+					@.queue.splice 0, @.queue.length
+					unless video
+						angular.forEach shuffled, (_video) =>
+							@.queue.push _video
+					else
+						@.corrente = video
+						@.track = 0
+						@.queue.push video
+						angular.forEach shuffled, (_video) =>
+							@.queue.push _video unless _video.vid is video.vid
+				else
+					duplicate = 0
+					angular.forEach @.queue, (entry, i) =>
+						duplicate = i if @.corrente.vid is entry.vid
+					@.track = duplicate
+					@.corrente = @.queue[duplicate]
 		}
 	]
 
@@ -121,6 +160,12 @@ define 'jkFactories', ['angular', 'angularResource', 'underscore'], (ng, ngResou
 					@.playlist.push entry
 					if @.pid
 						Video.save entry
+			shuffle: (jk) ->
+				jukePlayer.sync @.playlist unless jk
+				if @.playlist.length is 0
+					jukePlayer.shuffle jk
+				else
+					jukePlayer.shuffle jk, jukePlayer.corrente
 			remove: (entry) ->
 				$oid = @.playlist[entry].vid
 				if @.pid
