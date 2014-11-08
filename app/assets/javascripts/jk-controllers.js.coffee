@@ -26,6 +26,9 @@ define 'jkControllers', ['angular', 'jkFactories', 'grid'], (ng, jkFactories, gr
 				$scope.seek = jukePlayer.seek()
 		, 100
 
+		$scope.next = ->
+			jukePlayer.next()
+
 		$scope.pushfxq = (video) ->
 			jukePlayer.pushfxq video
 

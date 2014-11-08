@@ -57,8 +57,10 @@ define 'jkFactories', ['angular', 'angularResource', 'underscore'], (ng, ngResou
 					else
 						@.track = 0
 					@.corrente = @.queue[@.track]
-					@.player.loadVideoById @.corrente.vid
-					@.player.stopVideo() if @.track is 0
+					if @.track is 0
+						@.player.cueVideoById @.corrente.vid
+					else
+						@.player.loadVideoById @.corrente.vid
 				else
 					video = @.fxqueue.shift()
 					@.player.loadVideoById video.vid
@@ -101,6 +103,9 @@ define 'jkFactories', ['angular', 'angularResource', 'underscore'], (ng, ngResou
 				@.init() unless @.ready
 			pushq: (video) ->
 				@.queue.push video
+				if @.queue.length is 1
+					@.player.cueVideoById video.vid
+
 			remove: (vid) ->
 				angular.forEach @.queue, (video, i) =>
 					@.queue.splice i, 1 if vid is video.vid
