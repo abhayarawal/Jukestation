@@ -190,6 +190,7 @@ body
   position: relative;
   vertical-align: top;
   outline: none;
+  @include transition(all 0.1s ease);
 
   &.type2
   {
@@ -218,6 +219,11 @@ body
     @include border-bottom-radius(50%);
     @include border-left-radius(50%);
     @include border-right-radius(50%);
+  }
+
+  &:active
+  {
+    @include transform(scale(0.85));
   }
 
   &:hover

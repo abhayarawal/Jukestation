@@ -64,6 +64,8 @@ define 'jkFactories', ['angular', 'angularResource', 'underscore'], (ng, ngResou
 				else
 					video = @.fxqueue.shift()
 					@.player.loadVideoById video.vid
+			previous: ->
+				
 			unmute: ->
 				@.player.unMute()
 			mute: ->

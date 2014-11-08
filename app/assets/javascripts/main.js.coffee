@@ -28,8 +28,8 @@ require ['jukestation', 'scroll'], (jukestation, scroll) ->
 
 	$('.search-wrap').mCustomScrollbar
 		theme: "dark-2"
-		scrollInertia: 300
+		scrollInertia: 200
 
 	$('.sc-mid').mCustomScrollbar
 		theme: "light-2"
-		scrollInertia: 300
+		scrollInertia: 200
