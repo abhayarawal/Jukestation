@@ -202,6 +202,35 @@ define 'jkFactories', ['angular', 'angularResource', 'underscore'], (ng, ngResou
 		}
 	]
 
+	jkFactories.factory 'related', ['$http', '$q', 'playlist', ($http, $q, playlist) ->
+		fetch_related_videos: ->
+			track = _.random playlist.playlist.length
+			vid = playlist.playlist[track].vid
+
+			sgs_opt =
+				'v': 2
+				'max-results': 12
+				alt: 'json'
+
+			ret = []
+
+			defer = $http.get("//gdata.youtube.com/feeds/api/videos/#{vid}/related", params: sgs_opt, headers: {'X-CSRF-Token': undefined}
+			).then (response) ->
+				response.data
+
+			defer.then (videos) ->
+				angular.forEach videos.feed.entry, (entry, i) ->
+					ret.push
+            vid: entry.id.$t.match(/([a-z0-9-_]+)$/i)[1]
+            title: entry.title.$t
+            thumbnail: (_.max entry.media$group.media$thumbnail, (thumb) -> thumb.width).url
+            duration: entry.media$group.yt$duration.seconds
+            deleted: false
+          ret[i]['inqueue'] = playlist.exist ret[i]
+
+			ret
+	]
+
 	jkFactories.factory 'jkSearch', ['$http', '$q', 'playlist', ($http, $q, playlist) ->
 		fetch_yt_videos: (query) ->
 			api = "//gdata.youtube.com/feeds/api/videos?category=Music"
@@ -210,6 +239,7 @@ define 'jkFactories', ['angular', 'angularResource', 'underscore'], (ng, ngResou
 				'max-results': 12
 				alt: 'json'
 			ret = $q.defer()
+
 			$http.get(api, params: options, headers: {'X-CSRF-Token': undefined}
 			).success (videos) ->
 				_ref = []
@@ -217,7 +247,7 @@ define 'jkFactories', ['angular', 'angularResource', 'underscore'], (ng, ngResou
           _ref.push
             vid: entry.id.$t.match(/([a-z0-9-_]+)$/i)[1]
             title: entry.title.$t
-            thumbnail: entry.media$group.media$thumbnail[0].url
+            thumbnail: (_.max entry.media$group.media$thumbnail, (thumb) -> thumb.width).url
             duration: entry.media$group.yt$duration.seconds
             deleted: false
           _ref[i]['inqueue'] = playlist.exist _ref[i]

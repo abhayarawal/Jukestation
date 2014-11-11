@@ -7,6 +7,12 @@
 				%li{:'ng-repeat' => "v in ytvideos"}
 					%yt-video{:video => 'v', :add => "enqueue(v)"}
 
+			.p30
+				%h2{:'ng-show' => 'relatedvideos.length != 0'} You may also like these
+				%ul.no-ul.m0.p0.ul-ib
+					%li{:'ng-repeat' => "v in relatedvideos"}
+						%yt-video{:video => 'v', :add => "enqueue(v)"}
+
 .player
 	.intrinsic-wrap 
 		#player

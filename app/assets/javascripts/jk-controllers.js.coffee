@@ -1,7 +1,7 @@
 define 'jkControllers', ['angular', 'jkFactories', 'grid'], (ng, jkFactories, grid) ->
 	jkControllers = ng.module 'Jukestation.jkControllers', ['Jukestation.jkFactories']
 
-	jkControllers.controller 'jukeController', ['$scope', '$interval', 'jukePlayer', 'playlist', ($scope, $interval, jukePlayer, playlist) ->
+	jkControllers.controller 'jukeController', ['$scope', '$interval', 'jukePlayer', 'playlist', 'related', ($scope, $interval, jukePlayer, playlist, related) ->
 		playlist.init()
 		$scope.playlist = playlist.playlist
 		searchElm = $('.search-wrap')
@@ -13,6 +13,7 @@ define 'jkControllers', ['angular', 'jkFactories', 'grid'], (ng, jkFactories, gr
 		$scope.muted = false
 		$scope.shuffled = false
 		$scope.grid = false
+		$scope.relatedvideos = []
 
 		$scope.seekvolume = (n) ->
 			jukePlayer.volume n
@@ -80,6 +81,8 @@ define 'jkControllers', ['angular', 'jkFactories', 'grid'], (ng, jkFactories, gr
 				unless $('#q').is ':focus'
 					searchElm.show()
 					$('#q').focus()
+
+					$scope.relatedvideos = related.fetch_related_videos()
 	]
 
 	jkControllers.directive 'repeatEdge', ->
