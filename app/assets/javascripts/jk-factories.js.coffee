@@ -204,31 +204,34 @@ define 'jkFactories', ['angular', 'angularResource', 'underscore'], (ng, ngResou
 
 	jkFactories.factory 'related', ['$http', '$q', 'playlist', ($http, $q, playlist) ->
 		fetch_related_videos: ->
-			track = _.random playlist.playlist.length
-			vid = playlist.playlist[track].vid
+			if playlist.playlist.length > 0
+				track = _.random playlist.playlist.length
+				vid = playlist.playlist[track].vid
 
-			sgs_opt =
-				'v': 2
-				'max-results': 12
-				alt: 'json'
+				sgs_opt =
+					'v': 2
+					'max-results': 12
+					alt: 'json'
 
-			ret = []
+				ret = []
 
-			defer = $http.get("//gdata.youtube.com/feeds/api/videos/#{vid}/related", params: sgs_opt, headers: {'X-CSRF-Token': undefined}
-			).then (response) ->
-				response.data
+				defer = $http.get("//gdata.youtube.com/feeds/api/videos/#{vid}/related", params: sgs_opt, headers: {'X-CSRF-Token': undefined}
+				).then (response) ->
+					response.data
 
-			defer.then (videos) ->
-				angular.forEach videos.feed.entry, (entry, i) ->
-					ret.push
-            vid: entry.id.$t.match(/([a-z0-9-_]+)$/i)[1]
-            title: entry.title.$t
-            thumbnail: (_.max entry.media$group.media$thumbnail, (thumb) -> thumb.width).url
-            duration: entry.media$group.yt$duration.seconds
-            deleted: false
-          ret[i]['inqueue'] = playlist.exist ret[i]
+				defer.then (videos) ->
+					angular.forEach videos.feed.entry, (entry, i) ->
+						ret.push
+	            vid: entry.id.$t.match(/([a-z0-9-_]+)$/i)[1]
+	            title: entry.title.$t
+	            thumbnail: (_.max entry.media$group.media$thumbnail, (thumb) -> thumb.width).url
+	            duration: entry.media$group.yt$duration.seconds
+	            deleted: false
+	          ret[i]['inqueue'] = playlist.exist ret[i]
 
-			ret
+				ret
+			else
+				[]
 	]
 
 	jkFactories.factory 'jkSearch', ['$http', '$q', 'playlist', ($http, $q, playlist) ->
