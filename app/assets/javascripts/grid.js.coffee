@@ -23,7 +23,7 @@ define 'grid', ['jquery'], ($) ->
 				@.hidestate = true
 				$('jk-video').each (i) ->
 					$(@).css
-						left: "0px"
+						left: "-445px"
 						top: "0px"
 				.promise().done ->
 					setTimeout ->

@@ -19,3 +19,10 @@
 						.cube1
 						.cube2
 			= yield
+
+			.zoom-anim-dialog.mfp-hide#small-dialog
+				%ul.m0.p0.no-ul
+					%li{:'ng-repeat' => "video in fxqueue"}
+						{{ video.title }}
+					%li{:'ng-repeat' => "video in queue", :'ng-if' => "$index >= track"}
+						{{ video.title }}

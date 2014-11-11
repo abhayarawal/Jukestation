@@ -52,7 +52,7 @@ define 'jkFactories', ['angular', 'angularResource', 'underscore'], (ng, ngResou
 			shuffled: false
 			next: ->
 				if @.fxqueue.length is 0
-					unless @.track+1 is @.queue.length
+					unless @.track+1 >= @.queue.length
 						@.track += 1
 					else
 						@.track = 0
@@ -65,7 +65,13 @@ define 'jkFactories', ['angular', 'angularResource', 'underscore'], (ng, ngResou
 					video = @.fxqueue.shift()
 					@.player.loadVideoById video.vid
 			previous: ->
-				
+				if @.track is 0
+					@.corrente = @.queue[@.track]
+					@.player.cueVideoById @.corrente.vid
+				else
+					@.track -= 1
+					@.corrente = @.queue[@.track]
+					@.player.loadVideoById @.corrente.vid
 			unmute: ->
 				@.player.unMute()
 			mute: ->
@@ -111,8 +117,6 @@ define 'jkFactories', ['angular', 'angularResource', 'underscore'], (ng, ngResou
 			remove: (vid) ->
 				angular.forEach @.queue, (video, i) =>
 					@.queue.splice i, 1 if vid is video.vid
-				angular.forEach @.fxqueue, (video, i) =>
-					@.fxqueue.splice i, 1 if vid is video.vid
 			pushfxq: (video) ->
 				@.fxqueue.push video
 			shuffle: (jk, video = undefined)->

@@ -8,15 +8,20 @@ define 'jkControllers', ['angular', 'jkFactories', 'grid'], (ng, jkFactories, gr
 
 		$scope.queue = jukePlayer.queue
 		$scope.fxqueue = jukePlayer.fxqueue
+		$scope.track = jukePlayer.track
 		$scope.playing = false
 		$scope.muted = false
 		$scope.shuffled = false
+		$scope.grid = false
 
 		$scope.seekvolume = (n) ->
 			jukePlayer.volume n
 
 		$scope.$watch (() -> jukePlayer.playing), (playing) ->
 			$scope.playing = playing
+
+		$scope.$watch (() -> jukePlayer.track), (track) ->
+			$scope.track = track + 1
 
 		$scope.seekTo = (n) ->
 			jukePlayer.seekTo n
@@ -29,11 +34,15 @@ define 'jkControllers', ['angular', 'jkFactories', 'grid'], (ng, jkFactories, gr
 		$scope.next = ->
 			jukePlayer.next()
 
+		$scope.previous = ->
+			jukePlayer.previous()
+
 		$scope.pushfxq = (video) ->
 			jukePlayer.pushfxq video
 
 		$scope.togglegrid = ->
 			grid.togglegrid()
+			$scope.grid = !$scope.grid
 
 		$scope.shuffle = ->
 			$scope.shuffled = !$scope.shuffled

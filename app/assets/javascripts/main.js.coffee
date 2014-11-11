@@ -11,6 +11,7 @@ require.config
 		grid: '/assets/grid.js'
 		underscore: '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min'
 		scroll: '/assets/scroll.min'
+		magnific: "/assets/magnific"
 
 	shim:
     angular:
@@ -21,9 +22,11 @@ require.config
       exports: 'angularResource'
     scroll:
     	deps: ['jquery']
+    magnific:
+    	deps: ['jquery']
 
 
-require ['jukestation', 'scroll'], (jukestation, scroll) ->
+require ['jukestation', 'scroll', 'magnific'], (jukestation, scroll, magnific) ->
 	jukestation.init()
 
 	$('.search-wrap').mCustomScrollbar
@@ -33,3 +36,15 @@ require ['jukestation', 'scroll'], (jukestation, scroll) ->
 	$('.sc-mid').mCustomScrollbar
 		theme: "light-2"
 		scrollInertia: 200
+
+	$(document).ready ->
+		$('.popup-with-zoom-anim').magnificPopup
+			type: 'inline'
+			fixedContentPos: true
+			fixedBgPos: true
+			overflowY: 'auto'
+			closeBtnInside: true
+			preloader: false			
+			midClick: true
+			removalDelay: 300
+			mainClass: 'my-mfp-zoom-in'
